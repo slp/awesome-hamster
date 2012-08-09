@@ -68,7 +68,6 @@ stop_tracking = "/usr/bin/hamster-cli stop"
 Starting it with your session
 =============================
 
-Add this to your .xinitrc:
+Add this to the end of your "rc.lua":
 
-/usr/lib/hamster-applet/hamster-service &
-$HOME/bin/awehamster.py &
+awful.util.spawn_with_shell("~/bin/awehamster.py")
