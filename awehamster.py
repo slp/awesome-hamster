@@ -1,3 +1,4 @@
+#!/usr/bin/env python2
 import dbus, dbus.mainloop.glib
 import gobject
 import time
@@ -40,13 +41,13 @@ class AwesomeHamster(gobject.GObject):
 
         if startTime == 0 or endTime != 0:
             print "No activity"
-            self.ifaceAwesome.Eval('mytextbox.text = \'<span color=\"white\">  No activity  </span>\'')
+            self.ifaceAwesome.Eval('myawehamsterbox.text = \'<span color=\"white\">  No activity  </span>\'')
         else:
             minutes = elapsedTime / 60
             hours = minutes / 60
             minutes = minutes - (hours * 60)
             print "%s@%s %s:%s" % (f[4], f[6], self._pretty_format(hours), self._pretty_format(minutes))
-            self.ifaceAwesome.Eval('mytextbox.text = \'<span color=\"white\">  %s@%s %s:%s  </span>\'' % (f[4], f[6], self._pretty_format(hours), self._pretty_format(minutes)))
+            self.ifaceAwesome.Eval('myawehamsterbox.text = \'<span color=\"white\">  %s@%s %s:%s  </span>\'' % (f[4], f[6], self._pretty_format(hours), self._pretty_format(minutes)))
 
         return True
 
@@ -57,5 +58,5 @@ class AwesomeHamster(gobject.GObject):
         loop.run()
 
 
-prueba = AwesomeHamster()
-prueba.run()
+awehamster = AwesomeHamster()
+awehamster.run()
