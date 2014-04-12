@@ -1,4 +1,5 @@
 #!/usr/bin/env python2
+# -*- coding: utf-8 -*-
 import dbus, dbus.mainloop.glib
 import gobject
 import time
@@ -7,7 +8,7 @@ import calendar
 class AwesomeHamster(gobject.GObject):
     def __init__(self):
         gobject.GObject.__init__(self)
-        
+
         dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
         self.bus = dbus.SessionBus()
         self.bus.add_signal_receiver(self._on_facts_changed, 'FactsChanged', 'org.gnome.Hamster')
@@ -30,7 +31,7 @@ class AwesomeHamster(gobject.GObject):
 
     def _refresh(self):
         startTime = 0
-        facts = self.ifaceHamster.GetFacts(0,0,"")
+        facts = self.ifaceHamster.GetTodaysFacts()
 
         if len(facts) > 0:
             f = facts[-1]
@@ -41,13 +42,15 @@ class AwesomeHamster(gobject.GObject):
 
         if startTime == 0 or endTime != 0:
             print "No activity"
-            self.ifaceAwesome.Eval('myawehamsterbox.text = \'<span color=\"white\">  No activity  </span>\'')
+            self.ifaceAwesome.Eval('myawehamsterbox:set_text("No activity")')
         else:
             minutes = elapsedTime / 60
             hours = minutes / 60
             minutes = minutes - (hours * 60)
-            print "%s@%s %s:%s" % (f[4], f[6], self._pretty_format(hours), self._pretty_format(minutes))
-            self.ifaceAwesome.Eval('myawehamsterbox.text = \'<span color=\"white\">  %s@%s %s:%s  </span>\'' % (f[4], f[6], self._pretty_format(hours), self._pretty_format(minutes)))
+            activity = (f[4]).encode("utf-8")
+            category = (f[6]).encode("utf-8")
+            print "%s@%s %s:%s" % (activity, category, self._pretty_format(hours), self._pretty_format(minutes))
+            self.ifaceAwesome.Eval('myawehamsterbox:set_text("%s@%s %s:%s")' % (activity, category, self._pretty_format(hours), self._pretty_format(minutes)))
 
         return True
 
